@@ -1,0 +1,136 @@
+.college-branding {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.branding-content {
+  text-align: center;
+  max-width: 400px;
+}
+
+.shield-container {
+  margin-bottom: 2rem;
+}
+
+.college-shield {
+  width: 120px;
+  height: 144px;
+  filter: drop-shadow(0 0 20px rgba(245, 197, 24, 0.3));
+  animation: shieldPulse 3s ease-in-out infinite;
+}
+
+.shield-path {
+  animation: shieldGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes shieldPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 20px rgba(245, 197, 24, 0.3));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 30px rgba(245, 197, 24, 0.5));
+  }
+}
+
+@keyframes shieldGlow {
+  0% {
+    stroke: #f5c518;
+    stroke-width: 2;
+  }
+  100% {
+    stroke: #4f8ef7;
+    stroke-width: 3;
+  }
+}
+
+.college-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #4f8ef7, #764af1, #f5c518);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 2px;
+  text-shadow: 0 0 30px rgba(79, 142, 247, 0.3);
+  animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  0% {
+    text-shadow: 0 0 30px rgba(79, 142, 247, 0.3);
+  }
+  100% {
+    text-shadow: 0 0 40px rgba(79, 142, 247, 0.6), 0 0 60px rgba(118, 74, 241, 0.4);
+  }
+}
+
+.college-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 3rem 0;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #4f8ef7;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(79, 142, 247, 0.5);
+  animation: numberGlow 1s ease-out forwards;
+}
+
+@keyframes numberGlow {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .college-title {
+    font-size: 2.5rem;
+  }
+
+  .stats-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+}

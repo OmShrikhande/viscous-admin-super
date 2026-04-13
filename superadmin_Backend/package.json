@@ -1,0 +1,27 @@
+{
+  "name": "superadmin_Backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.30.3",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-async-handler": "^1.2.0",
+    "firebase-admin": "^13.8.0",
+    "helmet": "^8.1.0",
+    "joi": "^18.1.2",
+    "morgan": "^1.10.1",
+    "nodemon": "^3.1.14",
+    "winston": "^3.19.0"
+  }
+}

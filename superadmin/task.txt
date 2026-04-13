@@ -1,0 +1,71 @@
+# Super Admin Dashboard - Task Breakdown
+
+## Phase 1: Foundation & Architecture
+- [ ] Install dependencies (React Router, Redux Toolkit, MUI, Axios, Chart.js, React Hook Form, etc.)
+- [ ] Set up folder structure (`pages/`, `components/`, `services/`, `hooks/`, `utils/`, `store/`, `layouts/`)
+- [ ] Configure React Router with lazy loading and code splitting
+- [ ] Set up Redux Toolkit store with slice scaffolding
+- [ ] Create centralized Axios service layer with interceptors
+- [ ] Set up auth context and protected route wrapper
+
+## Phase 2: Layout Shell
+- [ ] Build `MainLayout` with fixed sidebar + top navbar + content area
+- [ ] Build `Sidebar` with navigation links and active state
+- [ ] Build `TopNavbar` with profile, logout, notifications, quick actions
+- [ ] Create consistent design system (theme, tokens, global CSS)
+
+## Phase 3: Reusable UI Components
+- [ ] `DataTable` (pagination, search, filters, sorting)
+- [ ] `StatsCard`, `MetricCard`
+- [ ] `FormModal`, `ConfirmDialog`
+- [ ] `StatusBadge`, `ActionDropdown`
+- [ ] `PageHeader`, `LoadingSpinner`, `ErrorBoundary`
+- [ ] Charts wrapper (Bar, Line, Pie, Doughnut)
+
+## Phase 4: Dashboard Page
+- [ ] System metrics cards (colleges, admins, buses, users, health)
+- [ ] Charts (growth, usage)
+- [ ] Recent activity feed
+- [ ] Alerts panel
+
+## Phase 5: Colleges Module
+- [ ] College list page (table, pagination, search, filters)
+- [ ] Add/Edit college form (React Hook Form + validation)
+- [ ] College detail view (controllers, buses, plan)
+
+## Phase 6: Controllers/Admins Module
+- [ ] Admin list with roles/permissions display
+- [ ] Create/Edit admin form
+- [ ] Advanced controls (activate, deactivate, revoke, delete)
+- [ ] Audit trail per admin
+
+## Phase 7: Users Module
+- [ ] User list with filters (role, college, status)
+- [ ] Read-only insights and optional actions
+
+## Phase 8: Billing Module
+- [ ] Subscription plan CRUD
+- [ ] Plan assignment to colleges
+- [ ] Invoice management (statuses, generation)
+- [ ] Billing history with download
+- [ ] Renewal indicators
+
+## Phase 9: Reports & Analytics
+- [ ] System usage reports with charts
+- [ ] Growth metrics
+- [ ] Export functionality
+
+## Phase 10: Settings Module
+- [ ] Tracking interval config
+- [ ] Notification rules
+- [ ] Feature toggles
+
+## Phase 11: Logs/Audit Module
+- [ ] Action log table with filters
+- [ ] Timestamps and actor details
+
+## Phase 12: Verification
+- [ ] Visual verification via browser
+- [ ] Route navigation test
+- [ ] Responsive design check
+- [ ] Create walkthrough

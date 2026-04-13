@@ -1,0 +1,473 @@
+.dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #020818 0%, #0a0a1a 50%, #1a1a2e 100%);
+}
+
+.main-content {
+  margin-left: 280px;
+  margin-top: 70px;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+  min-height: calc(100vh - 70px);
+  width: calc(100vw - 280px);
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.dashboard-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, #4f8ef7, #764af1, #f5c518);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dashboard-header p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.dashboard-card {
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(79, 142, 247, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.card-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.view-all-btn {
+  background: none;
+  border: none;
+  color: #4f8ef7;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.view-all-btn:hover {
+  color: #4f8ef7;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.activity-item:hover {
+  background: rgba(79, 142, 247, 0.05);
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #4f8ef7, #764af1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.activity-content p {
+  margin: 0 0 0.25rem 0;
+  color: #ffffff;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.activity-time {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(79, 142, 247, 0.1);
+  border: 1px solid rgba(79, 142, 247, 0.2);
+  border-radius: 12px;
+  color: #4f8ef7;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.action-btn:hover {
+  background: rgba(79, 142, 247, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 142, 247, 0.4);
+}
+
+/* Status Indicators */
+.status-indicators {
+  display: flex;
+  gap: 1rem;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #ffffff;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-dot.online {
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+}
+
+.status-dot.offline {
+  background: #ef4444;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
+
+/* Bus Status Grid */
+.bus-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.bus-status-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(79, 142, 247, 0.05);
+  border: 1px solid rgba(79, 142, 247, 0.1);
+  transition: all 0.3s ease;
+}
+
+.bus-status-item:hover {
+  background: rgba(79, 142, 247, 0.1);
+  transform: translateY(-2px);
+}
+
+.bus-status-item.online {
+  border-left: 4px solid #10b981;
+}
+
+.bus-status-item.offline {
+  border-left: 4px solid #ef4444;
+}
+
+.bus-status-item.maintenance {
+  border-left: 4px solid #f59e0b;
+}
+
+.bus-info {
+  flex: 1;
+}
+
+.bus-id {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.bus-school {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.125rem;
+}
+
+.bus-route {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.bus-status {
+  text-align: right;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.status-indicator .status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-indicator.online .status-dot {
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+}
+
+.status-indicator.offline .status-dot {
+  background: #ef4444;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
+
+.status-indicator.maintenance .status-dot {
+  background: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+}
+
+.status-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.status-indicator.online .status-text {
+  color: #10b981;
+}
+
+.status-indicator.offline .status-text {
+  color: #ef4444;
+}
+
+.status-indicator.maintenance .status-text {
+  color: #f59e0b;
+}
+
+.last-seen {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Payment Status */
+.payment-status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.payment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(79, 142, 247, 0.05);
+  border: 1px solid rgba(79, 142, 247, 0.1);
+  transition: all 0.3s ease;
+}
+
+.payment-item:hover {
+  background: rgba(79, 142, 247, 0.1);
+  transform: translateY(-2px);
+}
+
+.payment-item.paid {
+  border-left: 4px solid #10b981;
+}
+
+.payment-item.pending {
+  border-left: 4px solid #f59e0b;
+}
+
+.payment-item.overdue {
+  border-left: 4px solid #ef4444;
+}
+
+.payment-info {
+  flex: 1;
+}
+
+.school-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.admin-name {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.payment-details {
+  text-align: right;
+}
+
+.amount {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #4f8ef7;
+  margin-bottom: 0.25rem;
+}
+
+.payment-status {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.125rem;
+}
+
+.payment-status.paid {
+  color: #10b981;
+}
+
+.payment-status.pending {
+  color: #f59e0b;
+}
+
+.payment-status.overdue {
+  color: #ef4444;
+}
+
+.due-date {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.coming-soon {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.coming-soon h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+}
+
+.coming-soon p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Collapsed sidebar adjustments */
+.sidebar.collapsed ~ .main-content {
+  margin-left: 80px;
+  width: calc(100vw - 80px);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    margin-top: 70px;
+    padding: 1rem;
+    width: 100vw;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 2rem;
+  }
+
+  .dashboard-header p {
+    font-size: 1rem;
+  }
+
+  .dashboard-card {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0.75rem;
+  }
+
+  .dashboard-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .activity-item {
+    padding: 0.75rem;
+  }
+
+  .action-btn {
+    padding: 0.875rem;
+    font-size: 0.9rem;
+  }
+}
