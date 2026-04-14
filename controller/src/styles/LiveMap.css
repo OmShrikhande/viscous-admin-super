@@ -1,0 +1,91 @@
+/* ═══════════════════════════════════════════ 
+   Live Map — Premium Light Mode
+   ═══════════════════════════════════════════ */
+
+.map-wrapper {
+  padding: 20px;
+  margin: 0 0 32px 0;
+  border: 1px solid var(--card-border);
+  position: relative;
+  z-index: 10;
+  animation: fadeInUp 0.5s ease 0.25s both;
+}
+
+.map-header {
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-tertiary);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.pulse {
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  box-shadow: 0 0 0 rgba(34, 197, 94, 0.4);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.custom-bus-icon {
+  background: none;
+  border: none;
+}
+
+.bus-marker-inner {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.25);
+  border: 2.5px solid var(--accent);
+  transition: all 0.5s ease;
+}
+
+.map-tooltip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: inherit;
+}
+
+.map-tooltip strong {
+  font-size: 0.8rem;
+}
+
+.map-tooltip span {
+  font-size: 0.7rem;
+  color: var(--accent);
+}
+
+.map-popup h3 {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  color: var(--accent);
+}
+
+.map-popup p {
+  margin: 4px 0;
+  font-size: 0.85rem;
+}

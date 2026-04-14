@@ -1,0 +1,19 @@
+/* ═══════════════════════════════════════════ 
+   Add Driver — Premium Light Mode
+   ═══════════════════════════════════════════ */
+
+.add-driver-page {
+  padding: 32px 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.add-driver-form {
+  padding: 36px;
+  margin-top: 24px;
+  animation: fadeInUp 0.5s ease 0.1s both;
+}
+
+@media (max-width: 640px) {
+  .add-driver-page { padding: 20px; }
+}
