@@ -44,6 +44,17 @@ const CollegeForm = ({ data, onChange, plansList = [] }) => {
           <MenuItem value="suspended">Suspended</MenuItem>
         </TextField>
       </Grid>
+      <Grid size={{ xs: 12, sm: 6 }}>
+        <TextField 
+          fullWidth 
+          label="Plan Expiry Date" 
+          name="planExpiryDate" 
+          type="date" 
+          value={data?.planExpiryDate || ''} 
+          onChange={handleChange} 
+          slotProps={{ inputLabel: { shrink: true } }}
+        />
+      </Grid>
       <Grid size={{ xs: 12 }}>
         <TextField fullWidth label="Address" name="address" multiline rows={2} value={data?.address || ''} onChange={handleChange} />
       </Grid>

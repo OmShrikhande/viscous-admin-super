@@ -28,15 +28,50 @@ const login = asyncHandler(async (req, res) => {
       throw new ApiError(401, data.error ? data.error.message : 'Invalid email or password');
     }
 
-    // Check custom claims to ensure they are admin (optional safety check)
+    // 1. Get user record from Auth
     const userRecord = await admin.auth().getUser(data.localId);
+
+    // 2. Fetch user metadata from Firestore 'admins' collection
+    const { db } = require('../config/firebase');
+    const adminDoc = await db.collection('admins').doc(data.localId).get();
+    
+    let permissions = [];
+    let planExpired = false;
+    let collegeData = null;
+
+    if (adminDoc.exists) {
+      const adminData = adminDoc.data();
+      permissions = adminData.permissions || [];
+      
+      // 3. If controller, check college plan status
+      if (adminData.role === 'controller' && adminData.college && adminData.college !== 'Unassigned') {
+        const collegeSnap = await db.collection('colleges')
+          .where('name', '==', adminData.college)
+          .limit(1)
+          .get();
+
+        if (!collegeSnap.empty) {
+          collegeData = collegeSnap.docs[0].data();
+          if (collegeData.planExpiryDate) {
+            const expiry = new Date(collegeData.planExpiryDate);
+            const now = new Date();
+            if (expiry < now) {
+              planExpired = true;
+            }
+          }
+        }
+      }
+    }
 
     res.status(200).send(new ApiResponse(true, 'Login successful', {
       user: {
         id: userRecord.uid,
-        name: userRecord.displayName || 'Super Admin',
+        name: userRecord.displayName || (adminDoc.exists ? adminDoc.data().name : 'User'),
         email: userRecord.email,
-        role: userRecord.customClaims?.role || 'super_admin'
+        role: userRecord.customClaims?.role || 'super_admin',
+        college: adminDoc.exists ? adminDoc.data().college : null,
+        permissions,
+        planExpired
       },
       accessToken: data.idToken,
       refreshToken: data.refreshToken

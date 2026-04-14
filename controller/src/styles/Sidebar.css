@@ -17,6 +17,22 @@
   transition: var(--transition);
 }
 
+.sidebar.sidebar-locked {
+  background: var(--bg-tertiary);
+  opacity: 0.9;
+  filter: grayscale(0.5);
+  pointer-events: none;
+}
+
+.sidebar.sidebar-locked .sidebar-footer {
+  pointer-events: auto; /* Allow logout */
+}
+
+.sidebar.sidebar-locked .nav-item.active {
+  background: var(--bg-primary);
+  color: var(--text-muted);
+}
+
 .sidebar-logo {
   display: flex;
   align-items: center;

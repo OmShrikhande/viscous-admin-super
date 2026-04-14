@@ -5,6 +5,7 @@ import {
   Plus, Video, BarChart3, Route, Fuel, AlertTriangle
 } from 'lucide-react';
 import { useFleet } from '../context/FleetContext';
+import { useAuth } from '../context/AuthContext';
 import LiveMap from '../components/LiveMap';
 import '../styles/Dashboard.css';
 
@@ -23,7 +24,14 @@ const StatCard = ({ title, value, icon: Icon, color }) => (
 const Dashboard = () => {
   const navigate = useNavigate();
   const { buses, drivers } = useFleet();
+  const { user } = useAuth();
   
+  const hasPermission = (permission) => {
+    if (!user) return false;
+    if (user.role === 'super_admin') return true;
+    return user.permissions?.includes(permission);
+  };
+
   const totalBuses = buses.length;
   const onlineBuses = buses.filter(b => b.online).length;
   const totalStudents = buses.reduce((acc, b) => acc + b.totalStudents, 0);
@@ -34,7 +42,7 @@ const Dashboard = () => {
       {/* Welcome Banner */}
       <div className="welcome-banner">
         <div className="welcome-text">
-          <h1>Welcome back, Controller 👋</h1>
+          <h1>Welcome back, {user?.name || 'Controller'} 👋</h1>
           <p>Here's what's happening with your fleet today.</p>
         </div>
         <div className="welcome-stats">
@@ -59,21 +67,31 @@ const Dashboard = () => {
 
       {/* Quick Actions */}
       <div className="quick-actions">
-        <Link to="/add-bus" className="quick-action-btn" id="qa-add-bus">
-          <Plus size={16} /> Add New Bus
-        </Link>
-        <Link to="/add-driver" className="quick-action-btn" id="qa-add-driver">
-          <Plus size={16} /> Register Driver
-        </Link>
-        <Link to="/users" className="quick-action-btn" id="qa-add-user">
-          <Plus size={16} /> Add Student/User
-        </Link>
-        <Link to="/live-stream" className="quick-action-btn" id="qa-live-stream">
-          <Video size={16} /> Live Stream
-        </Link>
-        <Link to="/analytics" className="quick-action-btn" id="qa-analytics">
-          <BarChart3 size={16} /> View Analytics
-        </Link>
+        {hasPermission('manage_buses') && (
+          <Link to="/add-bus" className="quick-action-btn" id="qa-add-bus">
+            <Plus size={16} /> Add New Bus
+          </Link>
+        )}
+        {hasPermission('manage_drivers') && (
+          <Link to="/add-driver" className="quick-action-btn" id="qa-add-driver">
+            <Plus size={16} /> Register Driver
+          </Link>
+        )}
+        {hasPermission('manage_users') && (
+          <Link to="/users" className="quick-action-btn" id="qa-add-user">
+            <Plus size={16} /> Add Student/User
+          </Link>
+        )}
+        {hasPermission('view_livestream') && (
+          <Link to="/live-stream" className="quick-action-btn" id="qa-live-stream">
+            <Video size={16} /> Live Stream
+          </Link>
+        )}
+        {hasPermission('view_analytics') && (
+          <Link to="/analytics" className="quick-action-btn" id="qa-analytics">
+            <BarChart3 size={16} /> View Analytics
+          </Link>
+        )}
       </div>
 
       {/* Real-time Map */}

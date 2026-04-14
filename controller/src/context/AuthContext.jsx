@@ -24,32 +24,39 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
-  const login = (email, password) => {
-    return new Promise((resolve, reject) => {
-      // Simulate API call
-      setTimeout(() => {
-        // Demo credentials
-        if (
-          (email === 'controller@viscous.in' && password === 'admin123') ||
-          (email === 'admin@viscous.in' && password === 'admin123') ||
-          (email.includes('@') && password.length >= 6)
-        ) {
-          const userData = {
-            id: 'CT001',
-            name: email.split('@')[0].replace(/\./g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-            email,
-            role: 'Controller',
-            avatar: email.split('@')[0].slice(0, 2).toUpperCase(),
-            college: 'City University',
-            loginTime: new Date().toISOString(),
-          };
-          setUser(userData);
-          resolve(userData);
-        } else {
-          reject(new Error('Invalid email or password'));
-        }
-      }, 1200);
-    });
+  const login = async (email, password) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Invalid email or password');
+      }
+
+      const userData = {
+        id: data.data.user.id,
+        name: data.data.user.name,
+        email: data.data.user.email,
+        role: data.data.user.role,
+        college: data.data.user.college,
+        permissions: data.data.user.permissions || [],
+        planExpired: data.data.data?.planExpired || data.data.user.planExpired || false,
+        accessToken: data.data.accessToken,
+        loginTime: new Date().toISOString(),
+      };
+
+      setUser(userData);
+      localStorage.setItem('viscous_token', data.data.accessToken);
+      return userData;
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   };
 
   const logout = () => {

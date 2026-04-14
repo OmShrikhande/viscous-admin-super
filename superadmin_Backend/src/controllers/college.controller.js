@@ -66,6 +66,7 @@ const createCollege = asyncHandler(async (req, res) => {
     contactEmail: contactEmail || '',
     contactPhone: contactPhone || '',
     plan: plan || 'Basic',
+    planExpiryDate: req.body.planExpiryDate || '',
     status: status || 'active',
     address: address || '',
     buses: 0,
@@ -97,6 +98,11 @@ const updateCollege = asyncHandler(async (req, res) => {
   delete updateData.createdAt;
 
   updateData.updatedAt = new Date().toISOString();
+
+  // Handle planExpiryDate specifically if it exists in body
+  if (req.body.planExpiryDate !== undefined) {
+    updateData.planExpiryDate = req.body.planExpiryDate;
+  }
 
   await docRef.update(updateData);
 

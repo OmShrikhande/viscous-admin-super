@@ -2,10 +2,13 @@ import React from 'react';
 import { TextField, Grid, MenuItem, FormGroup, FormControlLabel, Checkbox, Typography, Box } from '@mui/material';
 
 const permissions = [
-  { key: 'manage_buses', label: 'Manage Buses' },
-  { key: 'manage_users', label: 'Manage Users' },
-  { key: 'view_reports', label: 'View Reports' },
-  { key: 'manage_billing', label: 'Manage Billing' },
+  { key: 'view_analytics', label: 'Analytics' },
+  { key: 'view_livestream', label: 'Live Stream' },
+  { key: 'manage_buses', label: 'Fleet Management' },
+  { key: 'manage_routes', label: 'Manage Routes' },
+  { key: 'manage_drivers', label: 'Add Driver' },
+  { key: 'manage_users', label: 'Users & Students' },
+  { key: 'manage_notifications', label: 'Notifications' },
   { key: 'manage_settings', label: 'Manage Settings' },
 ];
 
