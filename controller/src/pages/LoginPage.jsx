@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { 
+import {
   Mail, Lock, Eye, EyeOff, LogIn, Bus, AlertCircle,
   MapPin, BarChart3, Video, Shield
 } from 'lucide-react';
@@ -30,8 +30,8 @@ const LoginPage = () => {
   };
 
   const fillDemo = () => {
-    setEmail('controller@viscous.in');
-    setPassword('admin123');
+    setEmail('cotroller@sbjain.com');
+    setPassword('controller123');
   };
 
   return (
@@ -53,8 +53,8 @@ const LoginPage = () => {
           </h2>
 
           <p className="hero-desc">
-            Track your entire bus fleet in real-time, manage drivers, 
-            monitor student safety, and gain powerful analytics — 
+            Track your entire bus fleet in real-time, manage drivers,
+            monitor student safety, and gain powerful analytics —
             all from one unified dashboard.
           </p>
 
@@ -155,9 +155,9 @@ const LoginPage = () => {
             <a href="#" className="forgot-link">Forgot password?</a>
           </div>
 
-          <button 
-            type="submit" 
-            className="login-btn" 
+          <button
+            type="submit"
+            className="login-btn"
             disabled={loading}
             id="btn-login"
           >

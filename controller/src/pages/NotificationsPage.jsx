@@ -15,13 +15,37 @@ const initialNotifications = [
 ];
 
 const NotificationsPage = () => {
-  const [notifications, setNotifications] = useState(initialNotifications);
+  const [notifications, setNotifications] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const markAllRead = () => {
+  const fetchNotifications = async () => {
+    const token = localStorage.getItem('viscous_token');
+    try {
+      const response = await fetch('http://localhost:5000/api/v1/controller/notifications', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await response.json();
+      if (data.success) {
+        setNotifications(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  const markAllRead = async () => {
+    // Currently mapping all to read in one go (or could hit a bulk endpoint)
     setNotifications(notifications.map(n => ({ ...n, unread: false })));
   };
 
-  const deleteNotification = (id) => {
+  const deleteNotification = async (id) => {
+    // Basic local delete for now, or match with backend if endpoint exists
     setNotifications(notifications.filter(n => n.id !== id));
   };
 

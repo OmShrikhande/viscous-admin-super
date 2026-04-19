@@ -9,41 +9,58 @@ import '../styles/Analytics.css';
 const Analytics = () => {
   const { buses, drivers } = useFleet();
   const [activeFilter, setActiveFilter] = useState('week');
+  const [stats, setStats] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchAnalytics = async () => {
+    const token = localStorage.getItem('viscous_token');
+    try {
+      const response = await fetch('http://localhost:5000/api/v1/controller/analytics', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await response.json();
+      if (data.success) {
+        setStats(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching analytics:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchAnalytics();
+  }, []);
 
   const totalBuses = buses.length;
   const onlineBuses = buses.filter(b => b.online).length;
-  const totalStudents = buses.reduce((acc, b) => acc + b.totalStudents, 0);
-  const avgTrips = buses.length > 0 
-    ? (buses.reduce((acc, b) => acc + (b.tripsPerDay || 0), 0) / buses.length).toFixed(1) 
-    : 0;
+  const totalStudents = buses.reduce((acc, b) => acc + (b.totalStudents || 0), 0);
+  const avgTrips = stats?.totalTrips || 0;
 
   const filters = ['today', 'week', 'month', 'year'];
 
-  // Simulated weekly data
-  const weekData = [
-    { day: 'Mon', trips: 18 },
-    { day: 'Tue', trips: 24 },
-    { day: 'Wed', trips: 16 },
-    { day: 'Thu', trips: 28 },
-    { day: 'Fri', trips: 22 },
-    { day: 'Sat', trips: 10 },
-    { day: 'Sun', trips: 4 },
+  // Data from stats state or defaults
+  const weekData = stats?.fuelConsumption?.weekly?.map((val, i) => ({
+    day: stats.fuelConsumption.labels[i],
+    trips: val
+  })) || [
+    { day: 'Mon', trips: 0 }, { day: 'Tue', trips: 0 }, { day: 'Wed', trips: 0 },
+    { day: 'Thu', trips: 0 }, { day: 'Fri', trips: 0 }, { day: 'Sat', trips: 0 },
+    { day: 'Sun', trips: 0 },
   ];
-  const maxTrips = Math.max(...weekData.map(d => d.trips));
+  
+  const maxTrips = Math.max(...weekData.map(d => d.trips), 1);
 
   // Status distribution
   const statusDistribution = {
     moving: buses.filter(b => b.status === 'Moving').length,
-    stopped: buses.filter(b => b.status === 'Stopped').length,
+    stopped: buses.filter(b => b.status === 'Stopped' || !b.status).length,
     maintenance: buses.filter(b => b.status === 'Maintenance').length,
   };
 
   const activities = [
-    { icon: CheckCircle, type: 'success', title: 'Bus B001 completed Route R-101', desc: 'All 42 students dropped off safely', time: '2 min ago' },
-    { icon: AlertTriangle, type: 'warning', title: 'Bus B003 fuel level low', desc: 'Only 15% fuel remaining. Needs refueling.', time: '15 min ago' },
-    { icon: MapPin, type: 'info', title: 'New route R-205 added', desc: 'From Green Park to Central University', time: '1 hr ago' },
-    { icon: Activity, type: 'success', title: 'Driver John Doe rated 4.9★', desc: 'Received excellent feedback from parents', time: '2 hrs ago' },
-    { icon: AlertTriangle, type: 'error', title: 'Bus B003 scheduled maintenance', desc: 'Engine check required before next trip.', time: '3 hrs ago' },
+    { icon: CheckCircle, type: 'success', title: 'System monitoring active', desc: 'All fleet nodes communicating', time: 'Just now' },
   ];
 
   // Donut chart as conic gradient

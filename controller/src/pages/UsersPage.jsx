@@ -16,7 +16,8 @@ const initialUsers = [
 ];
 
 const UsersPage = () => {
-  const [users, setUsers] = useState(initialUsers);
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -24,30 +25,65 @@ const UsersPage = () => {
     name: '', email: '', phone: '', role: 'student', route: ''
   });
 
-  const tabs = [
-    { key: 'all', label: 'All Users', icon: UsersIcon },
-    { key: 'student', label: 'Students', icon: GraduationCap },
-    { key: 'parent', label: 'Parents', icon: User },
-    { key: 'driver', label: 'Drivers', icon: Bus },
-  ];
-
-  const filteredUsers = users.filter(u => {
-    const matchesTab = activeTab === 'all' || u.role === activeTab;
-    const matchesSearch = u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          u.email.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesTab && matchesSearch;
-  });
-
-  const handleAddUser = (e) => {
-    e.preventDefault();
-    const id = `U${String(users.length + 1).padStart(3, '0')}`;
-    setUsers([...users, { ...newUser, id, status: 'active' }]);
-    setNewUser({ name: '', email: '', phone: '', role: 'student', route: '' });
-    setShowModal(false);
+  const fetchData = async () => {
+    const token = localStorage.getItem('viscous_token');
+    try {
+      const response = await fetch('http://localhost:5000/api/v1/controller/users', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await response.json();
+      if (data.success) {
+        setUsers(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleDeleteUser = (id) => {
-    setUsers(users.filter(u => u.id !== id));
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleAddUser = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('viscous_token');
+    try {
+      const response = await fetch('http://localhost:5000/api/v1/controller/users', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify(newUser)
+      });
+      const data = await response.json();
+      if (data.success) {
+        setUsers(prev => [...prev, data.data]);
+        setShowModal(false);
+        setNewUser({ name: '', email: '', phone: '', role: 'student', route: '' });
+      }
+    } catch (error) {
+      console.error('Error adding user:', error);
+    }
+  };
+
+  const handleDeleteUser = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this user?')) return;
+    const token = localStorage.getItem('viscous_token');
+    try {
+      const response = await fetch(`http://localhost:5000/api/v1/controller/users/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await response.json();
+      if (data.success) {
+        setUsers(users.filter(u => u.id !== id));
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
   };
 
   const getInitials = (name) => name.split(' ').map(n => n[0]).join('').toUpperCase();

@@ -59,6 +59,8 @@ const seedDatabase = async () => {
       console.log(`[Seed] Default 'settings' document created.`);
     }
 
+    await require('./seedControllerData')();
+
     console.log('[Seed] Database seed check completed successfully.');
   } catch (error) {
     console.error('[Seed] Error seeding database:', error);

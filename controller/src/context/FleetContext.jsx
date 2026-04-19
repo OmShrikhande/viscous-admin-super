@@ -5,36 +5,60 @@ const FleetContext = createContext();
 
 export const FleetProvider = ({ children }) => {
   // Load initial state from localStorage or mockData
-  const [buses, setBuses] = useState(() => {
-    const saved = localStorage.getItem('fleet_buses');
-    return saved ? JSON.parse(saved) : initialBuses;
-  });
-
-  const [drivers, setDrivers] = useState(() => {
-    const saved = localStorage.getItem('fleet_drivers');
-    return saved ? JSON.parse(saved) : initialDrivers;
-  });
+  const [buses, setBuses] = useState([]);
+  const [drivers, setDrivers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Real-time bus coordinates for Leaflet
-  const [busLocations, setBusLocations] = useState(() => {
-    return initialBuses.reduce((acc, bus) => {
-      // Initialize with coordinates around Nagpur if not present
-      acc[bus.id] = { 
-        lat: 21.1458 + (Math.random() - 0.5) * 0.02, 
-        lng: 79.0882 + (Math.random() - 0.5) * 0.02 
-      };
-      return acc;
-    }, {});
-  });
+  const [busLocations, setBusLocations] = useState({});
 
-  // Persistence logic
+  // Fetch Data from Backend
   useEffect(() => {
-    localStorage.setItem('fleet_buses', JSON.stringify(buses));
-    localStorage.setItem('fleet_drivers', JSON.stringify(drivers));
-  }, [buses, drivers]);
+    const fetchData = async () => {
+      const token = localStorage.getItem('viscous_token');
+      if (!token) return;
+
+      try {
+        const [busesRes, driversRes] = await Promise.all([
+          fetch('http://localhost:5000/api/v1/controller/buses', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          }),
+          fetch('http://localhost:5000/api/v1/controller/drivers', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          })
+        ]);
+
+        const busesData = await busesRes.json();
+        const driversData = await driversRes.json();
+
+        if (busesData.success) {
+          setBuses(busesData.data);
+          // Initialize locations
+          const locations = {};
+          busesData.data.forEach(bus => {
+            locations[bus.id] = { 
+              lat: 21.1458 + (Math.random() - 0.5) * 0.02, 
+              lng: 79.0882 + (Math.random() - 0.5) * 0.02 
+            };
+          });
+          setBusLocations(locations);
+        }
+
+        if (driversData.success) setDrivers(driversData.data);
+      } catch (error) {
+        console.error('Error fetching fleet data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Simulation Engine: Move online buses slightly every 4 seconds
   useEffect(() => {
+    if (buses.length === 0) return;
+
     const interval = setInterval(() => {
       setBusLocations(prev => {
         const next = { ...prev };
@@ -53,33 +77,49 @@ export const FleetProvider = ({ children }) => {
     return () => clearInterval(interval);
   }, [buses]);
 
-  const addDriver = (driver) => {
-    const newDriver = {
-      ...driver,
-      id: `D${drivers.length + 1}`,
-      image: `https://api.dicebear.com/7.x/avataaars/svg?seed=${driver.name}`
-    };
-    setDrivers([...drivers, newDriver]);
+  const addDriver = async (driver) => {
+    const token = localStorage.getItem('viscous_token');
+    try {
+      const response = await fetch('http://localhost:5000/api/v1/controller/drivers', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify(driver)
+      });
+      const data = await response.json();
+      if (data.success) {
+        setDrivers(prev => [...prev, data.data]);
+      }
+    } catch (error) {
+      console.error('Error adding driver:', error);
+    }
   };
 
-  const addBus = (bus) => {
-    const newBus = {
-      ...bus,
-      id: `B${String(buses.length + 1).padStart(3, '0')}`,
-      online: true,
-      status: 'Moving',
-      speed: '0 km/h',
-      fuel: '100%',
-      stops: [],
-      attendance: { morning: { in: '--', out: '--', count: 0 }, evening: { in: '--', out: '--', count: 0 } },
-      tripsPerDay: 0
-    };
-    setBuses([...buses, newBus]);
-    // Initialize location for the new bus
-    setBusLocations(prev => ({
-      ...prev,
-      [newBus.id]: { lat: 21.1458, lng: 79.0882 }
-    }));
+  const addBus = async (bus) => {
+    const token = localStorage.getItem('viscous_token');
+    try {
+      const response = await fetch('http://localhost:5000/api/v1/controller/buses', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify(bus)
+      });
+      const data = await response.json();
+      if (data.success) {
+        const newBus = data.data;
+        setBuses(prev => [...prev, newBus]);
+        setBusLocations(prev => ({
+          ...prev,
+          [newBus.id]: { lat: 21.1458, lng: 79.0882 }
+        }));
+      }
+    } catch (error) {
+      console.error('Error adding bus:', error);
+    }
   };
 
   return (
